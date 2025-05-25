@@ -1,6 +1,15 @@
 # InfiRay P2 Pro Viewer
 
-:warning: **[WIP]**  
+:warning: **[WIP]**
+
+This is a fork of P2 Pro Viewer, based on work from LeoDJ and Pinoerkel
+
+As for now I just fixed code so it works on Linux and added camera auto detection as it had ID hardcoded to 0.
+
+Everything below this line comes from original project readme.md
+
+---
+
 See [below](#roadmap) for a roadmap.
 
 This project aims to be an open-source image viewer and API for the InfiRay P2 Pro thermal camera module.
