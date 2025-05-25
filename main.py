@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import threading
 import time
 import os
@@ -7,6 +9,26 @@ import keyboard
 import P2Pro.video
 import P2Pro.P2Pro_cmd as P2Pro_CMD
 import P2Pro.recorder
+
+from cv2 import CAP_V4L2
+from cv2_enumerate_cameras import enumerate_cameras
+
+indexes = []
+print("Found following inputs matching P2 Pro:")
+for camera_info in enumerate_cameras(apiPreference = CAP_V4L2):
+    if camera_info.vid == P2Pro.video.P2Pro_usb_id[0] \
+        and camera_info.pid == P2Pro.video.P2Pro_usb_id[1]:
+      indexes.append(camera_info.index)
+      print(f'{camera_info.index}: {camera_info.path} "{camera_info.name}" ')
+
+if indexes:
+    # Select lower ID. On Linux this is usually the one with video capture
+    camera_index = min(indexes)
+    print(f"Selected index {camera_index}")
+else:
+    print("Unable to find P2 pro, aborting...")
+    sys.exit(1)
+
 
 logging.basicConfig()
 logging.getLogger('P2Pro.recorder').setLevel(logging.INFO)
@@ -23,7 +45,7 @@ try:
     cam_cmd = P2Pro_CMD.P2Pro()
 
     vid = P2Pro.video.Video()
-    video_thread = threading.Thread(target=vid.open, args=(cam_cmd, 0, ))
+    video_thread = threading.Thread(target=vid.open, args=(cam_cmd, camera_index, ))
     video_thread.start()
 
     while not vid.video_running:
