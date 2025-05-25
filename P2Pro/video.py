@@ -105,10 +105,11 @@ class Video:
                 continue
 
             self.video_running = True
-            
-            # On Windows, with RGB conversion turned off, OpenCV returns the image as a 2D array with size [1][<imageLen>]. Turn into 1D array. 
-            if platform.system() == 'Windows':
-                frame = frame[0]
+
+            # According to original comment, on Windows, with RGB conversion turned off,
+            # OpenCV returns the image as a 2D array with size [1][<imageLen>].
+            # I found out it is exactly the same on linux
+            frame = frame[0]
 
             # split video frame (top is pseudo color, bottom is temperature data)
             frame_mid_pos = int(len(frame) / 2)
